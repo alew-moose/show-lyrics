@@ -84,7 +84,7 @@ var parseLyricsRe = regexp.MustCompile(
 func parseLyrics(lyricsHtml []byte) ([]byte, error) {
 	match := parseLyricsRe.FindAllSubmatch(lyricsHtml, 1)
 	if match == nil {
-		return []byte{}, errors.New("Failed to parse html")
+		return []byte{}, errors.New("failed to parse html")
 	}
 
 	lyrics := htmlStrip(match[0][1])

@@ -44,7 +44,7 @@ func parseStats(stats []byte) (*songinfo.SongInfo, error) {
 	title := regexpMatch(titleRe, stats)
 
 	if artist == nil || title == nil {
-		return nil, errors.New("Failed to parse cmus status")
+		return nil, errors.New("failed to parse cmus status")
 	}
 
 	si := songinfo.SongInfo{

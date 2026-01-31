@@ -20,9 +20,12 @@ import (
 )
 
 func main() {
+	log.SetFlags(0)
+	log.SetPrefix("show-lyrics: ")
+
 	home := os.Getenv("HOME")
 	if home == "" {
-		log.Fatal("HOME not found")
+		log.Fatal("no $HOME environment variable")
 	}
 
 	dotDir := path.Join(home, ".show-lyrics")
@@ -38,7 +41,7 @@ func main() {
 
 	flockErr := tryFlock(lockFile)
 	if flockErr != nil {
-		log.Fatalf("Failed to obtain a lock: %s", flockErr)
+		log.Fatalf("failed to obtain a lock: %s", flockErr)
 	}
 	defer func() { _ = os.Remove(lockFile) }()
 
@@ -197,7 +200,7 @@ func fetchLyrics(c *http.Client, si *songinfo.SongInfo) ([]byte, error) {
 		newSi := songinfo.SongInfo{Artist: si.Artist, Title: title}
 		return fetchLyrics(c, &newSi)
 	}
-	return nil, errors.New("Lyrics not found")
+	return nil, errors.New("lyrics not found")
 }
 
 var SIGetters = [...]func() (*songinfo.SongInfo, error){
@@ -217,7 +220,7 @@ func getSongInfo() (*songinfo.SongInfo, error) {
 		}
 		return si, nil
 	}
-	return nil, errors.New("No players running")
+	return nil, errors.New("no players running")
 }
 
 func prepareLyrics(si *songinfo.SongInfo, lyrics []byte) []byte {
